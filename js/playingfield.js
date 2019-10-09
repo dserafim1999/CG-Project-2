@@ -9,10 +9,11 @@ function createPlayingField(x, y, z){
 	//material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
 
 	playingField.base = createBase();
-	//playingField.canons = createCanons(); //multiple or individual?
+	playingField.canons = createCanons();
 
 
 	playingField.add(playingField.base);
+	playingField.add(playingField.canons);
 	playingField.position.set(x, y, z);
 
 	scene.add(playingField);
@@ -29,40 +30,54 @@ function createBase(){
 	//base.floor =createFloor(base, 0, 0, 0);
 	//base.fence = createFence(base); //maybe used for colision??
 
-	createFloor(base, 0, 0, 0);
-	createFence(base);
+	base.floor = createFloor(base, 0, 0, 0);
+	base.fence = createFence();
+
+	base.add(base.floor);
+	base.add(base.fence);
 
 	return base;
 }
 
-function createFence(base){
+function createFence(){
 	'use strict';
 
-	createWall(base, Math.PI/2, 0, 10, -25); //y = height/2
-	createWall(base, 0, -25, 10, 0); //y = height/2
-	createWall(base, 0, 25, 10, 0); //y = height/2
+	var fence = new THREE.Object3D();
+
+	createWall(fence, Math.PI/2, 0, 10, -30); //y = height/2
+	createWall(fence, 0, -30, 10, 0); //y = height/2
+	createWall(fence, 0, 30, 10, 0); //y = height/2
+
+	return fence;
 }
 
 function createFloor(base, x, y, z){
 	'use strict';
 
-	material = new THREE.MeshBasicMaterial({ color: 0xfffffffff, wireframe: true });
-	geometry = new THREE.PlaneGeometry(50,50);
+	var floor = new THREE.Object3D();
+
+	material = new THREE.MeshBasicMaterial({color: 0x292929, wireframe: true });
+	geometry = new THREE.PlaneGeometry(60, 60);
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(x, y, z);
 	mesh.rotation.x = Math.PI/2;
 
-	base.add(mesh);
+	floor.add(mesh);
+
+	return floor;
 }
 
-function createWall(base, rotation, x, y, z){
+function createWall(fence, rotation, x, y, z){
 	'use strict';
 
-	material = new THREE.MeshBasicMaterial({color : 0xfffffffff, wireframe: true});
-	geometry = new THREE.CubeGeometry(2,20,50);
+	var wall = new THREE.Object3D();
+
+	material = new THREE.MeshBasicMaterial({color : 0xB23B1E, wireframe: true});
+	geometry = new THREE.CubeGeometry(2,20,60);
 	mesh = new THREE.Mesh(geometry, material);
+
 	mesh.position.set(x, y, z);
 	mesh.rotation.y = rotation;
-	base.add(mesh);
+	fence.add(mesh);
 }

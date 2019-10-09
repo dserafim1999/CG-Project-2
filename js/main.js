@@ -10,6 +10,12 @@ function onKeyDown(e) {
 	'use strict';
 
 	switch (e.keyCode) {
+		case 37: //left
+			playingField.canons.rotating.clockwise = true;
+			break;
+		case 39: //right
+			playingField.canons.rotating.anticlockwise = true;
+			break;
 	}
 }
 
@@ -35,6 +41,12 @@ function onKeyUp(e) {
 	'use strict';
 
 	switch (e.keyCode) {
+		case 37: //left
+			playingField.canons.rotating.clockwise = false;
+			break;
+		case 39: //right
+			playingField.canons.rotating.anticlockwise = false;
+			break;
 	}
 }
 
@@ -63,7 +75,7 @@ function render() {
 function animate() {
 	'use strict';
 
-	//canonMovement();
+	canonMovement();
 
 	render();
 
