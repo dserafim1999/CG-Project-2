@@ -22,37 +22,47 @@ function createPlayingField(x, y, z){
 function createBase(){
 	'use strict';
 
-	var floor;
-
 	var base = new THREE.Object3D();
 
-	floor = createFloor(base, 0, 0, 0);
-	createFence(base);
 
-	base.add(floor);
+	//for now floor and fence are simply placed, maybe add individually to base to be able to manipulate
+	//base.floor =createFloor(base, 0, 0, 0);
+	//base.fence = createFence(base); //maybe used for colision??
+
+	createFloor(base, 0, 0, 0);
+	createFence(base);
 
 	return base;
 }
 
-function createFence(){
+function createFence(base){
 	'use strict';
-	
-	//createWall(base,); //add position and rotation
-	//createWall(base,); //add position and rotation
-	//createWall(base,); //add position and rotation
+
+	createWall(base, Math.PI/2, 0, 10, -25); //y = height/2
+	createWall(base, 0, -25, 10, 0); //y = height/2
+	createWall(base, 0, 25, 10, 0); //y = height/2
 }
 
 function createFloor(base, x, y, z){
 	'use strict';
 
-	var floor = new THREE.Object3D();
 	material = new THREE.MeshBasicMaterial({ color: 0xfffffffff, wireframe: true });
 	geometry = new THREE.PlaneGeometry(50,50);
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(x, y, z);
-	floor.add(mesh);
-	floor.rotation.x = Math.PI/2;
+	mesh.rotation.x = Math.PI/2;
 
-	return floor;
+	base.add(mesh);
+}
+
+function createWall(base, rotation, x, y, z){
+	'use strict';
+
+	material = new THREE.MeshBasicMaterial({color : 0xfffffffff, wireframe: true});
+	geometry = new THREE.CubeGeometry(2,20,50);
+	mesh = new THREE.Mesh(geometry, material);
+	mesh.position.set(x, y, z);
+	mesh.rotation.y = rotation;
+	base.add(mesh);
 }
