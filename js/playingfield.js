@@ -51,8 +51,8 @@ function createFloor(base, x, y, z){
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(x, y, z);
-	floor.rotation.z = Math.PI;
 	floor.add(mesh);
+	floor.rotation.x = Math.PI/2;
 
 	return floor;
 }
