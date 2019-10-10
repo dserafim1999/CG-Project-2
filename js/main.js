@@ -59,12 +59,17 @@ function onResize() {
 
 function createScene() {
 	'use strict';
+	var i;
+	var aux = Math.random() * 10;
 
 	scene = new THREE.Scene();
 
 	scene.add(new THREE.AxisHelper(10));
 
 	createPlayingField(0, 0, 0);
+	for(i = 0; i < aux; i++) {
+		createBall((Math.random() - 0.5) * 50, 1.5, (Math.random() - 0.5) * 50);
+	}
 }
 
 function render() {
