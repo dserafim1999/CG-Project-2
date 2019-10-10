@@ -11,10 +11,10 @@ function onKeyDown(e) {
 
 	switch (e.keyCode) {
 		case 37: //left
-			playingField.canons.rotating.clockwise = true;
+			playingField.cannons.rotating.clockwise = true;
 			break;
 		case 39: //right
-			playingField.canons.rotating.anticlockwise = true;
+			playingField.cannons.rotating.anticlockwise = true;
 			break;
 	}
 }
@@ -42,10 +42,10 @@ function onKeyUp(e) {
 
 	switch (e.keyCode) {
 		case 37: //left
-			playingField.canons.rotating.clockwise = false;
+			playingField.cannons.rotating.clockwise = false;
 			break;
 		case 39: //right
-			playingField.canons.rotating.anticlockwise = false;
+			playingField.cannons.rotating.anticlockwise = false;
 			break;
 	}
 }
@@ -67,7 +67,7 @@ function createScene() {
 	scene.add(new THREE.AxisHelper(10));
 
 	createPlayingField(0, 0, 0);
-	for(i = 0; i < aux; i++) {
+	for (i = 0; i < aux; i++) {
 		createBall((Math.random() - 0.5) * 50, 1.5, (Math.random() - 0.5) * 50);
 	}
 }
@@ -80,7 +80,7 @@ function render() {
 function animate() {
 	'use strict';
 
-	canonMovement();
+	cannonMovement();
 
 	render();
 
