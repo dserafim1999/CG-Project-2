@@ -45,6 +45,9 @@ function onKeyPress(e) {
 		case 69: //E
 		case 101: //e
 			selectedCanon = "right";
+			break;
+		case 32: //space
+			shoot = true;
 			break; 
 	}
 }
@@ -94,6 +97,8 @@ function animate() {
 
 	cannonMovement();
 	setActiveCannon(selectedCanon, playingField);
+	if(shoot)
+		shootBall();
 
 	render();
 

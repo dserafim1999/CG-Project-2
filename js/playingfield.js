@@ -11,8 +11,6 @@ function createPlayingField(x, y, z){
 
 	playingField.activeCannon = playingField.cannons.middle; 
 
-	console.log(playingField.activeCannon);
-
 	playingField.add(playingField.base);
 	playingField.add(playingField.cannons);
 	playingField.position.set(x, y, z);

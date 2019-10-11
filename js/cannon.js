@@ -1,5 +1,5 @@
 var geometry, material, mesh;
-var cannons, selectedCanon = "middle";
+var cannons, selectedCanon = "middle", shoot = false;
 var	rotationSpeed = 0.05;
 
 function cannonMovement(){
@@ -13,6 +13,11 @@ function cannonMovement(){
 	}
 }
 
+function shootBall(){
+	shoot = false;
+	createBall(playingField.activeCannon.position.x, playingField.activeCannon.position.y, playingField.activeCannon.position.z);
+}
+
 function createCannons(){
 	'use strict';
 
@@ -23,12 +28,9 @@ function createCannons(){
 		anticlockwise: false
 	}
 
-	cannons.left = createCannon(-20, 3, 60);
-	cannons.middle = createCannon(0, 3, 60);
-	cannons.right = createCannon(20, 3, 60);
-
-	console.log(cannons.left);
-
+	cannons.left = createCannon(-20, 3, 45);
+	cannons.middle = createCannon(0, 3, 45);
+	cannons.right = createCannon(20, 3, 45);
 
 	cannons.add(cannons.left);
 	cannons.add(cannons.middle);
@@ -48,7 +50,7 @@ function createPlatform(cannons){
 	geometry = new THREE.PlaneGeometry(60,10);
 	mesh = new THREE.Mesh(geometry, material);
 
-	mesh.position.set(0, 0, 60);
+	mesh.position.set(0, 0, 45);
 	mesh.rotation.x = Math.PI/2;
 
 	platform.add(mesh);
@@ -61,7 +63,7 @@ function createCannon(x, y, z){
 	var cannon = new THREE.Object3D();
 
 	material = new THREE.MeshBasicMaterial({ color: 0x606060, wireframe: true }); 
-	geometry = new THREE.CylinderGeometry(3, 2, 15); //radiusTop, radiusBottom, height
+	geometry = new THREE.CylinderGeometry(4, 3, 15); //radiusTop, radiusBottom, height
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(0, 0, 0);
