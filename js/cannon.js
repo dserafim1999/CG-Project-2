@@ -1,44 +1,48 @@
 var geometry, material, mesh;
-var cannons, rotationSpeed = 0.05;
+var cannons, selectedCanon = "middle";
+var	rotationSpeed = 0.05;
 
 function cannonMovement(){
 	'use strict';
 
 	if(cannons.rotating.clockwise){
-		cannons.rotation.y -= rotationSpeed;
-		//cannons.left.rotation.y -= rotationSpeed;
-		//cannons.middle.rotation.y -= rotationSpeed;
-		//cannons.right.rotation.y -= rotationSpeed;
+		playingField.activeCannon.rotation.y -= rotationSpeed;
 	}
 	if(cannons.rotating.anticlockwise){
-		cannons.rotation.y += rotationSpeed;
-		//cannons.left.rotation.y += rotationSpeed;
-		//cannons.middle.rotation.y += rotationSpeed;
-		//cannons.right.rotation.y += rotationSpeed;
+		playingField.activeCannon.rotation.y += rotationSpeed;
 	}
 }
 
-function createCanons(){
+function createCannons(){
 	'use strict';
 
-	cannons = new THREE.Object3D();
+	cannons = createPlatform(cannons);
 
 	cannons.rotating = {
 		clockwise: false,
 		anticlockwise: false
 	}
 
-	createPlatform(cannons);
+	cannons.left = createCannon(-20, 3, 60);
+	cannons.middle = createCannon(0, 3, 60);
+	cannons.right = createCannon(20, 3, 60);
 
-	cannons.left = createCanon(cannons, -20, 3, 60);
-	cannons.middle = createCanon(cannons, 0, 3, 60);
-	cannons.right = createCanon(cannons, 20, 3, 60);
+	console.log(cannons.left);
+
+
+	cannons.add(cannons.left);
+	cannons.add(cannons.middle);
+	cannons.add(cannons.right);
+
+	console.log()
 
 	return cannons;
 }
 
 function createPlatform(cannons){
 	'use strict';
+
+	var platform = new THREE.Object3D();
 
 	material = new THREE.MeshBasicMaterial({ color: 0x663300, wireframe: true }); //random color
 	geometry = new THREE.PlaneGeometry(60,10);
@@ -47,10 +51,11 @@ function createPlatform(cannons){
 	mesh.position.set(0, 0, 60);
 	mesh.rotation.x = Math.PI/2;
 
-	cannons.add(mesh);
+	platform.add(mesh);
+	return platform;
 }
 
-function createCanon(cannons, x, y, z){
+function createCannon(x, y, z){
 	'use strict';
 
 	var cannon = new THREE.Object3D();
@@ -59,10 +64,29 @@ function createCanon(cannons, x, y, z){
 	geometry = new THREE.CylinderGeometry(3, 2, 15); //radiusTop, radiusBottom, height
 	mesh = new THREE.Mesh(geometry, material);
 
-	mesh.position.set(x, y, z);
+	mesh.position.set(0, 0, 0);
 	mesh.rotation.x = Math.PI/2;
 
-	cannons.add(mesh);
+	cannon.add(mesh);
+	cannon.position.set(x, y, z);
 
 	return cannon;
+}
+
+function setActiveCannon(selected, playingField){
+	'use strict';
+
+	if(selected == "left"){
+		playingField.activeCannon.children[0].material.color.set(0x606060);
+		playingField.activeCannon = playingField.cannons.left;
+		playingField.activeCannon.children[0].material.color.set(0xFF0000);		
+	} else if (selected == "middle"){
+		playingField.activeCannon.children[0].material.color.set(0x606060);
+		playingField.activeCannon = playingField.cannons.middle;
+		playingField.activeCannon.children[0].material.color.set(0xFF0000);
+	} else if (selected == "right"){
+		playingField.activeCannon.children[0].material.color.set(0x606060);
+		playingField.activeCannon = playingField.cannons.right;
+		playingField.activeCannon.children[0].material.color.set(0xFF0000);
+	}
 }

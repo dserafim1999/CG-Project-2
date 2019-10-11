@@ -34,6 +34,18 @@ function onKeyPress(e) {
 				scene.activeCamera = cameras.followBallPerspectiveCamera;
 			}
 			break;
+		case 81: //Q
+		case 113: //q
+			selectedCanon = "left";
+			break;
+		case 87: //W
+		case 119: //w
+			selectedCanon = "middle";
+			break;
+		case 69: //E
+		case 101: //e
+			selectedCanon = "right";
+			break; 
 	}
 }
 
@@ -81,6 +93,7 @@ function animate() {
 	'use strict';
 
 	cannonMovement();
+	setActiveCannon(selectedCanon, playingField);
 
 	render();
 

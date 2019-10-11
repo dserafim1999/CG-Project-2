@@ -7,7 +7,11 @@ function createPlayingField(x, y, z){
 	playingField = new THREE.Object3D();
 
 	playingField.base = createBase();
-	playingField.cannons = createCanons();
+	playingField.cannons = createCannons();
+
+	playingField.activeCannon = playingField.cannons.middle; 
+
+	console.log(playingField.activeCannon);
 
 	playingField.add(playingField.base);
 	playingField.add(playingField.cannons);
@@ -28,6 +32,7 @@ function createBase(){
 
 	base.add(base.floor);
 	base.add(base.fence);
+
 
 	return base;
 }
