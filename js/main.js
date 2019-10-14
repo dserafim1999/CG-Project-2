@@ -94,6 +94,16 @@ function render() {
 
 function animate() {
 	'use strict';
+	var i, j;
+	var intVector;
+	for(i = 0; i < BallList.length; i++) {
+		for(j = i + 1; j < BallList.length; j++) {
+			if(hasBallCollision(BallList[i], BallList[j])) {
+				intVector = FindIntersection(BallList[i], BallList[j]);
+				ProcessCollision(BallList[i], BallList[j], intVector);
+			}
+		}
+	}
 
 	cannonMovement();
 	setActiveCannon(selectedCanon, playingField);
