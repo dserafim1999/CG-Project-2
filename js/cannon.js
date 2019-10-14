@@ -1,6 +1,6 @@
 var geometry, material, mesh;
 var cannons, selectedCanon = "middle", shoot = false;
-var	rotationSpeed = 0.05;
+var	rotationSpeed = 0.05, speed = 2;
 
 function cannonMovement(){
 	'use strict';
@@ -13,9 +13,23 @@ function cannonMovement(){
 	}
 }
 
+function cannonballsMovement(){
+	'use strict';
+	
+	for (var i = 0; i < CannonBalls.length; i++){
+		if(CannonBalls[i].direction != undefined)
+			CannonBalls[i].position.addScaledVector(CannonBalls[i].direction, -speed);
+
+	}
+}
+
 function shootBall(){
 	shoot = false;
-	createBall(playingField.activeCannon.position.x, playingField.activeCannon.position.y, playingField.activeCannon.position.z);
+	ball = createBall(playingField.activeCannon.position.x , playingField.activeCannon.position.y, playingField.activeCannon.position.z);
+	//ball.rotation
+	ball.direction = playingField.activeCannon.getWorldDirection();
+	CannonBalls.push(ball);
+
 }
 
 function createCannons(){

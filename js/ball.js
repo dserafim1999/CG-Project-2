@@ -1,4 +1,4 @@
-var BallList = new Array();
+var BallList = new Array(), CannonBalls = new Array();
 
 var geometry, material, mesh;
 
@@ -10,8 +10,10 @@ function createBall(x, y, z) {
 	mesh = new THREE.Mesh(geometry, material);
 	ball.add(mesh);
 
-
-	ball.position.set(x, y, z);
+	ball.position.set(0, 0, 0);
 	BallList.push(ball);
 	scene.add(ball);
+	ball.position.set(x, y, z);
+
+	return ball;
 }
