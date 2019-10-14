@@ -17,8 +17,8 @@ function cannonballsMovement(){
 	'use strict';
 	
 	for (var i = 0; i < CannonBalls.length; i++){
-		if(CannonBalls[i].direction != undefined)
-			CannonBalls[i].position.addScaledVector(CannonBalls[i].direction, -speed);
+		if(CannonBalls[i].movement != null)
+			CannonBalls[i].position.addScaledVector(CannonBalls[i].movement, -speed);
 
 	}
 }
@@ -27,7 +27,7 @@ function shootBall(){
 	shoot = false;
 	ball = createBall(playingField.activeCannon.position.x , playingField.activeCannon.position.y, playingField.activeCannon.position.z);
 	//ball.rotation
-	ball.direction = playingField.activeCannon.getWorldDirection();
+	ball.movement = playingField.activeCannon.getWorldDirection();
 	CannonBalls.push(ball);
 
 }

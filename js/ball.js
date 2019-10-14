@@ -12,13 +12,14 @@ function createBall(x, y, z) {
 	mesh = new THREE.Mesh(geometry, material);
 	ball.add(mesh);
 	ball.radius = 2;
-	ball.movement = new Vector3(0, 0, 0);
+	ball.movement = null;
 
 	ball.position.set(0, 0, 0);
 	BallList.push(ball);
 	scene.add(ball);
 	ball.position.set(x, y, z);
 
+/*
 	//Determines if the 2 balls collide
 	//return true or false
 	function hasBallCollision(ball1, ball2) {
@@ -39,6 +40,6 @@ function createBall(x, y, z) {
 	function ProcessCollision(ball1, ball2, intersection) {
 
 	}
-
+*/
 	return ball;
 }
