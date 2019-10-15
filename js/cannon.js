@@ -1,15 +1,17 @@
 var geometry, material, mesh;
 var cannons, selectedCanon = "middle", shoot = false;
-var	rotationSpeed = 0.05, speed = 2;
+var	rotationSpeed = 0.05;
 
 function cannonMovement(){
 	'use strict';
 
 	if(cannons.rotating.clockwise){
-		playingField.activeCannon.rotation.y -= rotationSpeed;
+		if(playingField.activeCannon.rotation.y > - Math.PI/2)
+			playingField.activeCannon.rotation.y -= rotationSpeed;
 	}
 	if(cannons.rotating.anticlockwise){
-		playingField.activeCannon.rotation.y += rotationSpeed;
+		if(playingField.activeCannon.rotation.y < Math.PI/2)
+			playingField.activeCannon.rotation.y += rotationSpeed;
 	}
 }
 
@@ -18,7 +20,8 @@ function cannonballsMovement(){
 	
 	for (var i = 0; i < CannonBalls.length; i++){
 		if(CannonBalls[i].movement != null)
-			CannonBalls[i].position.addScaledVector(CannonBalls[i].movement, -speed);
+			CannonBalls[i].rotateX(-CannonBalls[i].speed);
+			CannonBalls[i].position.addScaledVector(CannonBalls[i].movement, -CannonBalls[i].speed);
 
 	}
 }
@@ -49,8 +52,6 @@ function createCannons(){
 	cannons.add(cannons.left);
 	cannons.add(cannons.middle);
 	cannons.add(cannons.right);
-
-	console.log()
 
 	return cannons;
 }

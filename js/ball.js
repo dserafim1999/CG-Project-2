@@ -11,8 +11,10 @@ function createBall(x, y, z) {
 	geometry = new THREE.SphereGeometry(2, 32, 32);
 	mesh = new THREE.Mesh(geometry, material);
 	ball.add(mesh);
+
 	ball.radius = 2;
 	ball.movement = null;
+	ball.speed = getRandomFloat(0.1, 3);
 
 	ball.position.set(0, 0, 0);
 	BallList.push(ball);

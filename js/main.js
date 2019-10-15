@@ -6,6 +6,10 @@ var cameras = {
 	followBallPerspectiveCamera: null
 };
 
+function getRandomFloat(min, max) {
+  return Math.random() * (max - min + 1) + min;
+}
+
 function onKeyDown(e) {
 	'use strict';
 
