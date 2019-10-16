@@ -7,7 +7,7 @@ var cameras = {
 };
 
 function getRandomFloat(min, max) {
-  return Math.random() * (max - min + 1) + min;
+	return Math.random() * (max - min + 1) + min;
 }
 
 function onKeyDown(e) {
@@ -40,19 +40,19 @@ function onKeyPress(e) {
 			break;
 		case 81: //Q
 		case 113: //q
-			selectedCanon = "left";
+			selectedCanon = 'left';
 			break;
 		case 87: //W
 		case 119: //w
-			selectedCanon = "middle";
+			selectedCanon = 'middle';
 			break;
 		case 69: //E
 		case 101: //e
-			selectedCanon = "right";
+			selectedCanon = 'right';
 			break;
 		case 32: //space
 			shoot = true;
-			break; 
+			break;
 	}
 }
 
@@ -86,9 +86,9 @@ function createScene() {
 	scene.add(new THREE.AxisHelper(10));
 
 	createPlayingField(0, 0, 0);
-	for (i = 0; i < aux; i++) {
-		createBall((Math.random() - 0.5) * 50, 1.5, (Math.random() - 0.5) * 50);
-	}
+	// for (i = 0; i < aux; i++) {
+	// 	createBall((Math.random() - 0.5) * 50, 1.5, (Math.random() - 0.5) * 50);
+	// }
 }
 
 function render() {
@@ -98,22 +98,11 @@ function render() {
 
 function animate() {
 	'use strict';
-	var i, j;
-	var intVector;
-	/*
-	for(i = 0; i < BallList.length; i++) {
-		for(j = i + 1; j < BallList.length; j++) {
-			if(hasBallCollision(BallList[i], BallList[j])) {
-				intVector = FindIntersection(BallList[i], BallList[j]);
-				ProcessCollision(BallList[i], BallList[j], intVector);
-			}
-		}
-	}*/
+	handleBallCollision();
 
 	cannonMovement();
 	setActiveCannon(selectedCanon, playingField);
-	if(shoot)
-		shootBall();
+	if (shoot) shootBall();
 	cannonballsMovement();
 
 	render();
