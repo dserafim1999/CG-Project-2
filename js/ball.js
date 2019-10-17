@@ -18,6 +18,7 @@ function createBall(x, y, z) {
 
 	ball.radius = 2;
 	ball.movement = null;
+
 	ball.speed = 0.2;
 	ball.add(new THREE.AxisHelper(10));
 
@@ -72,13 +73,13 @@ function createBall(x, y, z) {
 		var totalNewMovementToCollidingBall;
 
 		if (this.movement) {
-			angle_from_this_ball = this.movement.angleTo(intersection);
+			angle_from_this_ball = this.movement.angleTo(intersection.negate());
 			movementAddedToThisBallFromThisBall = new THREE.Vector3(this.movement.x * Math.sin(angle_from_this_ball), 0, this.movement.z * Math.sin(angle_from_this_ball));
 			movementAddedToCollidingBallFromThisBall = new THREE.Vector3(this.movement.x * Math.cos(angle_from_this_ball), 0, this.movement.z * Math.cos(angle_from_this_ball));
 		}
 
 		if (ball.movement) {
-			angle_from_colliding_ball = ball.movement.angleTo(intersection.negate());
+			angle_from_colliding_ball = ball.movement.angleTo(intersection);
 			movementAddedToThisBallFromCollidingBall = new THREE.Vector3(ball.movement.x * Math.cos(angle_from_colliding_ball), 0, ball.movement.z * Math.cos(angle_from_colliding_ball));
 			movementAddedToCollidingBallFromCollidingBall = new THREE.Vector3(ball.movement.x * Math.sin(angle_from_colliding_ball), 0, ball.movement.z * Math.sin(angle_from_colliding_ball));
 		}
@@ -89,14 +90,45 @@ function createBall(x, y, z) {
 		this.movement = totalNewMovementToThisBall;
 		ball.movement = totalNewMovementToCollidingBall;
 
+		var waytogo = BALL_DIAMETER - intersection.length();
+
+		this.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
+
 		if (this.movement) {
-			this.position.addScaledVector(this.movement, this.speed);
+			this.position.addScaledVector(this.movement, this.speed * delta);
 		}
 
 		if (ball.movement) {
-			ball.position.addScaledVector(ball.movement, ball.speed);
+			ball.position.addScaledVector(ball.movement, ball.speed * delta);
 		}
 		//return 'Process';
+	};
+
+	ball.processCollitionWithBall2 = function(ball, intersection) {
+		var distance = intersection.length();
+
+		if (distance == 0.0) {
+			intersection = new THREE.Vector3(0.0, 0.0, 1.0);
+			distance = 1.0;
+		}
+
+		//if (distance > 1.0) return;
+
+		intersection = intersection.normalize();
+		var aci = this.movement.dot(intersection);
+		var bci = ball.movement.dot(intersection);
+
+		// Solve for the new velocities using the 1-dimensional elastic intersection equations.
+		// Turns out it's really simple when the masses are the same.
+		var acf = bci;
+		var bcf = aci;
+
+		// Replace the intersection velocity components with the new ones
+		this.movement.add(intersection.addScalar(acf - aci));
+		ball.movement.add(intersection.addScalar(bcf - bci));
+
+		this.position.addScaledVector(this.movement, this.speed * delta);
+		ball.position.addScaledVector(ball.movement, ball.speed * delta);
 	};
 
 	//Determines the movement for the ball after a collision with a wall
