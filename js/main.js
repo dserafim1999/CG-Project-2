@@ -6,6 +6,9 @@ var cameras = {
 	followBallPerspectiveCamera: null
 };
 
+var clock = new THREE.Clock();
+var delta = 0;
+
 function getRandomFloat(min, max) {
 	return Math.random() * (max - min + 1) + min;
 }
@@ -98,6 +101,8 @@ function render() {
 
 function animate() {
 	'use strict';
+
+	delta = clock.getDelta();
 	handleBallCollision();
 
 	cannonMovement();
