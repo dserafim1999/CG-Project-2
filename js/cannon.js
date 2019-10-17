@@ -18,9 +18,12 @@ function cannonMovement(){
 function cannonballsMovement(){
 	'use strict';
 	
+
 	for (var i = 0; i < CannonBalls.length; i++){
 		if(CannonBalls[i].movement != null)
-			CannonBalls[i].rotateX(-CannonBalls[i].speed);
+			var perpendicular = new THREE.Vector3(CannonBalls[i].movement.x,CannonBalls[i].movement.y,CannonBalls[i].movement.z); 
+			perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
+			CannonBalls[i].rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
 			CannonBalls[i].position.addScaledVector(CannonBalls[i].movement, -CannonBalls[i].speed);
 
 	}
@@ -29,9 +32,8 @@ function cannonballsMovement(){
 function shootBall(){
 	shoot = false;
 	ball = createBall(playingField.activeCannon.position.x , playingField.activeCannon.position.y, playingField.activeCannon.position.z);
-	//ball.rotation
 	ball.movement = playingField.activeCannon.getWorldDirection();
-	ball.position.addScaledVector(ball.movement, -7);
+	ball.position.addScaledVector(ball.movement, -7); //-7 to shoot from the tip of the cannon and not the center
 	CannonBalls.push(ball);
 
 }

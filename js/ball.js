@@ -18,7 +18,8 @@ function createBall(x, y, z) {
 
 	ball.radius = 2;
 	ball.movement = null;
-	ball.speed = getRandomFloat(0.1, 3);
+	ball.speed = 0.2;
+	ball.add(new THREE.AxisHelper(10));
 
 	ball.position.set(0, 0, 0);
 	BallList.push(ball);
