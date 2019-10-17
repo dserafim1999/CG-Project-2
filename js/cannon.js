@@ -31,6 +31,7 @@ function shootBall(){
 	ball = createBall(playingField.activeCannon.position.x , playingField.activeCannon.position.y, playingField.activeCannon.position.z);
 	//ball.rotation
 	ball.movement = playingField.activeCannon.getWorldDirection();
+	ball.position.addScaledVector(ball.movement, -7);
 	CannonBalls.push(ball);
 
 }
@@ -78,7 +79,7 @@ function createCannon(x, y, z){
 	var cannon = new THREE.Object3D();
 
 	material = new THREE.MeshBasicMaterial({ color: 0x606060, wireframe: true }); 
-	geometry = new THREE.CylinderGeometry(4, 3, 15); //radiusTop, radiusBottom, height
+	geometry = new THREE.CylinderGeometry(4, 3, 14); //radiusTop, radiusBottom, height
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(0, 0, 0);
