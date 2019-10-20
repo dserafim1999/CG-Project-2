@@ -53,7 +53,7 @@ function createFloor(base, x, y, z){
 
 	var floor = new THREE.Object3D();
 
-	material = new THREE.MeshBasicMaterial({color: 0x292929, wireframe: true });
+	material = new THREE.MeshBasicMaterial({color: 0xFFFFFF, wireframe: true });
 	geometry = new THREE.PlaneGeometry(60, 90);
 	mesh = new THREE.Mesh(geometry, material);
 
