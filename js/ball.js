@@ -17,7 +17,7 @@ function createBall(x, y, z) {
 
 	ball.radius = 2;
 	ball.movement = new THREE.Vector3(0,0,0);
-	ball.speed = Math.random()*2 + 0.5;
+	ball.speed = Math.random()*4 + 0.5;
 	ball.xyz = new THREE.AxisHelper(10);
 	ball.add(ball.xyz);
 
@@ -42,13 +42,13 @@ function createBall(x, y, z) {
 	ball.isCollidingWithWall = function() {
 		'use strict';
 
-		if (this.position.z <= 30) {
-			if ((this.position.x >= 29 && this.position.x <= 31) || (this.position.x <= -29 && this.position.x >= -31)) {
+		if (this.position.z <= 32) {
+			if ((this.position.x >= 28 && this.position.x <= 32) || (this.position.x <= -28 && this.position.x >= -32)) {
 				return true;
 			}
 		}
-		if (this.position.x <= 31 && this.position.x >= -31) {
-			if (this.position.z <= -29 && this.position.z >= -31) {
+		if (this.position.x <= 32 && this.position.x >= -32) {
+			if (this.position.z <= -28 && this.position.z >= -32) {
 				return true;
 			}
 		}
@@ -59,8 +59,7 @@ function createBall(x, y, z) {
 		'use strict';
 
 		if(this.movement.x == 0 && this.movement.y == 0){
-			this.movement.x = -ball.movement.x;
-			this.movement.z = -ball.movement.z;
+			this.movement.copy(ball.movement);
 		}
 		if(this.movement.x > 0 && ball.movement.x > 0 || this.movement.x < 0 && ball.movement.x < 0){
 			this.movement.x = ball.movement.x;
@@ -129,13 +128,12 @@ function handleBallCollisionWithBalls(ball1, ball2) {
 	}
 }
 
-function ballsMovement(){
+function ballsMovement(delta){
 	'use strict';
 	
 	for (var i = 0; i < BallList.length; i++){
-		var perpendicular = new THREE.Vector3().copy(BallList[i].movement); 
-		perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
-		BallList[i].rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
+		reduceSpeed(delta*friction, BallList[i]);
+		rotateBall(BallList[i]);
 		BallList[i].position.addScaledVector(BallList[i].movement, -BallList[i].speed);
 		outOfBounds(BallList[i]);
 	}
@@ -154,6 +152,19 @@ function toggleAxis(toggle){
 		else
 			BallList[i].xyz.visible = false;
 	}
+}
+
+function reduceSpeed(speed, ball){
+	if(ball.speed >= 0)
+		ball.speed -= speed;
+}
+
+function rotateBall(ball){
+	if(ball.speed >= 0){
+		var perpendicular = new THREE.Vector3().copy(ball.movement); 
+		perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
+		ball.rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
+}
 }
 
 

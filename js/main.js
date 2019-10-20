@@ -1,4 +1,5 @@
 var scene, renderer, toggle = true;
+var friction = 0.5;
 
 var cameras = {
 	topOrthographicCamera: null,
@@ -118,7 +119,7 @@ function animate() {
 	cannonMovement();
 	setActiveCannon(selectedCanon, playingField);
 	if (shoot) shootBall();
-	ballsMovement();
+	ballsMovement(delta);
 
 	render();
 
