@@ -1,4 +1,4 @@
-var scene, renderer;
+var scene, renderer, toggle = false;
 
 var cameras = {
 	topOrthographicCamera: null,
@@ -8,10 +8,6 @@ var cameras = {
 
 var clock = new THREE.Clock();
 var delta = 0;
-
-function getRandomFloat(min, max) {
-	return Math.random() * (max - min + 1) + min;
-}
 
 function onKeyDown(e) {
 	'use strict';
@@ -44,6 +40,11 @@ function onKeyPress(e) {
 		case 81: //Q
 		case 113: //q
 			selectedCanon = 'left';
+			break;
+		case 82: //R
+		case 114: //r
+			toggleAxis(toggle);
+			toggle = !toggle;
 			break;
 		case 87: //W
 		case 119: //w
@@ -81,17 +82,25 @@ function onResize() {
 
 function createScene() {
 	'use strict';
-	var i;
+
+	var i,j;
 	var aux = Math.random() * 10;
+	var ball1,ball2;
 
 	scene = new THREE.Scene();
 
-	scene.add(new THREE.AxisHelper(10));
-
 	createPlayingField(0, 0, 0);
-	// for (i = 0; i < aux; i++) {
-	// 	createBall((Math.random() - 0.5) * 50, 1.5, (Math.random() - 0.5) * 50);
-	// }
+	 for (i = 0; i < aux; i++) {
+	 	ball1 = createBall((Math.random() - 0.5) * 50, 2, (Math.random() - 0.5) * 50);
+	 	for (j = 0; j < i; j++){
+	 		ball2 = BallList[j];
+	 		if(ball1.isCollidingWithBall(ball2)){
+	 			scene.remove(ball1);
+	 			continue;
+	 		}
+	 	}
+	}
+
 }
 
 function render() {
@@ -103,12 +112,12 @@ function animate() {
 	'use strict';
 
 	delta = clock.getDelta();
-	handleBallCollision();
 
+	handleBallCollision();
 	cannonMovement();
 	setActiveCannon(selectedCanon, playingField);
 	if (shoot) shootBall();
-	cannonballsMovement();
+	ballsMovement();
 
 	render();
 
@@ -127,7 +136,6 @@ function init() {
 	createScene();
 	cameras.topOrthographicCamera = createTopOrthographicCamera();
 	cameras.fixedPerspectiveCamera = createFixedPerspectiveCamera();
-	// createFollowBallPerspectiveCamera(ball) // This should only be used with a balls
 	scene.activeCamera = cameras.fixedPerspectiveCamera;
 	render();
 

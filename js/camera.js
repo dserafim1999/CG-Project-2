@@ -56,7 +56,7 @@ function createFixedPerspectiveCamera() {
  */
 function createFollowBallPerspectiveCamera(ball) {
 	'use strict';
-	let fov = 45;
+	let fov = 300;
 	let aspect = window.innerWidth / window.innerHeight;
 	let near = 1;
 	let far = 1000;
@@ -64,8 +64,8 @@ function createFollowBallPerspectiveCamera(ball) {
 	var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 	ball.add(camera);
 
-	camera.position.set(10, 10, 0);
-	camera.lookAt(new THREE.Vector3(0, 0, 0));
+	camera.position.set(5, 0, 5);
+	camera.lookAt(ball.movement);
 
 	return camera;
 }

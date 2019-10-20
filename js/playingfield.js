@@ -25,7 +25,7 @@ function createBase(){
 	var base = new THREE.Object3D();
 
 	//use these for collision??
-	base.floor = createFloor(base, 0, 0, 0);
+	base.floor = createFloor(base, 0, 0, 15);
 	base.fence = createFence();
 
 	base.add(base.floor);
@@ -54,7 +54,7 @@ function createFloor(base, x, y, z){
 	var floor = new THREE.Object3D();
 
 	material = new THREE.MeshBasicMaterial({color: 0x292929, wireframe: true });
-	geometry = new THREE.PlaneGeometry(60, 60);
+	geometry = new THREE.PlaneGeometry(60, 90);
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(x, y, z);
