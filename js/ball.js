@@ -133,9 +133,9 @@ function ballsMovement(){
 	'use strict';
 	
 	for (var i = 0; i < BallList.length; i++){
-		//var perpendicular = new THREE.Vector3(BallList[i].movement.x,BallList[i].movement.y,BallList[i].movement.z); 
-		//perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
-		//BallList[i].rotateOnAxis(perpendicular.normalize(), rotationSpeed); //rotates around the perpendicular vector
+		var perpendicular = new THREE.Vector3().copy(BallList[i].movement); 
+		perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
+		BallList[i].rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
 		BallList[i].position.addScaledVector(BallList[i].movement, -BallList[i].speed);
 		outOfBounds(BallList[i]);
 	}
