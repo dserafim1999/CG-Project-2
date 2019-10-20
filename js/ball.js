@@ -60,20 +60,20 @@ function createBall(x, y, z) {
 
 		if(this.movement.x == 0 && this.movement.y == 0){
 			this.movement.copy(ball.movement);
+		} else {
+			if(this.movement.x > 0 && ball.movement.x > 0 || this.movement.x < 0 && ball.movement.x < 0){
+				this.movement.x = ball.movement.x;
+				this.movement.z = -ball.movement.z;
+			}
+			else if(this.movement.z > 0 && ball.movement.z > 0 || this.movement.z < 0 && ball.movement.z < 0){
+				this.movement.z = ball.movement.z;
+				this.movement.x = -ball.movement.x;
+			}
+			else {
+				this.movement.x = -this.movement.x;
+				this.movement.z = -this.movement.z;
+			}
 		}
-		if(this.movement.x > 0 && ball.movement.x > 0 || this.movement.x < 0 && ball.movement.x < 0){
-			this.movement.x = ball.movement.x;
-			this.movement.z = -ball.movement.z;
-		}
-		else if(this.movement.z > 0 && ball.movement.z > 0 || this.movement.z < 0 && ball.movement.z < 0){
-			this.movement.z = ball.movement.z;
-			this.movement.x = -ball.movement.x;
-		}
-		else {
-			this.movement.x = -this.movement.x;
-			this.movement.z = -this.movement.z;
-		}
-
 		ball.movement.x = -ball.movement.x;
 		ball.movement.z = -ball.movement.z;
 		this.speed = ball.speed;
@@ -81,7 +81,7 @@ function createBall(x, y, z) {
 
 	//Determines the movement for the ball after a collision with a wall
 	ball.processCollitionWithWall = function() {
-		if (this.position.z <= 30 && this.position.y >= 0) {
+		if (this.position.z <= 32 && this.position.y >= 0) {
 			if ((this.position.x >= 28 && this.position.x <= 32) || (this.position.x <= -28 && this.position.x >= -32)) {
 				this.movement.x = -this.movement.x;
 			}
