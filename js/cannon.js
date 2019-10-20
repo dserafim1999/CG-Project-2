@@ -21,6 +21,8 @@ function shootBall(){
 	ball.movement = playingField.activeCannon.getWorldDirection();
 	ball.position.addScaledVector(ball.movement, -7); //-7 to shoot from the tip of the cannon and not the center
 	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(ball) // This should only be used with a balls
+	if(toggle == false)
+		ball.xyz.visible = false;
 }
 
 function createCannons(){

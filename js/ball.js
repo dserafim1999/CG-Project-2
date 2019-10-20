@@ -63,12 +63,12 @@ function createBall(x, y, z) {
 			this.movement.z = -ball.movement.z;
 		}
 		if(this.movement.x > 0 && ball.movement.x > 0 || this.movement.x < 0 && ball.movement.x < 0){
-			this.movement.x = ball.movement.x
-			this.movement.z = -ball.movement.z
+			this.movement.x = ball.movement.x;
+			this.movement.z = -ball.movement.z;
 		}
 		else if(this.movement.z > 0 && ball.movement.z > 0 || this.movement.z < 0 && ball.movement.z < 0){
-			this.movement.z = ball.movement.z
-			this.movement.x = -ball.movement.x
+			this.movement.z = ball.movement.z;
+			this.movement.x = -ball.movement.x;
 		}
 		else {
 			this.movement.x = -this.movement.x;
@@ -82,13 +82,13 @@ function createBall(x, y, z) {
 
 	//Determines the movement for the ball after a collision with a wall
 	ball.processCollitionWithWall = function() {
-		if (this.position.z <= 30) {
-			if ((this.position.x >= 29 && this.position.x <= 31) || (this.position.x <= -29 && this.position.x >= -31)) {
+		if (this.position.z <= 30 && this.position.y >= 0) {
+			if ((this.position.x >= 28 && this.position.x <= 32) || (this.position.x <= -28 && this.position.x >= -32)) {
 				this.movement.x = -this.movement.x;
 			}
 		}
-		if (this.position.x <= 31 && this.position.x >= -31) {
-			if (this.position.z <= -29 && this.position.z >= -31) {
+		if (this.position.x <= 32 && this.position.x >= -32 && this.position.y >= 0) {
+			if (this.position.z <= -28 && this.position.z >= -32) {
 				this.movement.z = -this.movement.z;
 			}
 		}
@@ -142,7 +142,7 @@ function ballsMovement(){
 }
 
 function outOfBounds(ball){
-	if(ball.position.z > 60 || ball.position.z < -30 || ball.position.x > 30 || ball.position.x < -30){
+	if(ball.position.z > 62 || ball.position.z < -32 || ball.position.x > 32 || ball.position.x < -32){
 		ball.position.y -= 2;
 	}
 }
@@ -150,9 +150,9 @@ function outOfBounds(ball){
 function toggleAxis(toggle){
 	for (var i = 0; i < BallList.length; i++) {
 		if(toggle)
-			BallList[i].add(BallList[i].xyz);
+			BallList[i].xyz.visible = true;
 		else
-			BallList[i].remove(BallList[i].xyz);
+			BallList[i].xyz.visible = false;
 	}
 }
 

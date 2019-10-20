@@ -1,4 +1,4 @@
-var scene, renderer, toggle = false;
+var scene, renderer, toggle = true;
 
 var cameras = {
 	topOrthographicCamera: null,
@@ -43,8 +43,8 @@ function onKeyPress(e) {
 			break;
 		case 82: //R
 		case 114: //r
-			toggleAxis(toggle);
 			toggle = !toggle;
+			toggleAxis(toggle);
 			break;
 		case 87: //W
 		case 119: //w
@@ -83,9 +83,9 @@ function onResize() {
 function createScene() {
 	'use strict';
 
-	var i,j;
+	var i, j;
 	var aux = Math.random() * 10;
-	var ball1,ball2;
+	var ball1, ball2;
 
 	scene = new THREE.Scene();
 
@@ -95,8 +95,9 @@ function createScene() {
 	 	for (j = 0; j < i; j++){
 	 		ball2 = BallList[j];
 	 		if(ball1.isCollidingWithBall(ball2)){
-	 			scene.remove(ball1);
-	 			continue;
+	 			scene.remove(ball2);
+	 			BallList.splice(j, 1);
+	 			break;
 	 		}
 	 	}
 	}
