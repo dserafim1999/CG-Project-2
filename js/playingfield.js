@@ -68,7 +68,7 @@ function createFloor(base, x, y, z){
 function createWall(fence, rotation, x, y, z){
 	'use strict';
 
-	material = new THREE.MeshBasicMaterial({color : 0xB23B1E, wireframe: true});
+	material = new THREE.MeshBasicMaterial({color : 0xFFFFFF, wireframe: true});
 	geometry = new THREE.CubeGeometry(2,20,60);
 	mesh = new THREE.Mesh(geometry, material);
 

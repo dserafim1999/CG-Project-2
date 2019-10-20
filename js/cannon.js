@@ -55,13 +55,38 @@ function createCannon(x, y, z){
 	geometry = new THREE.CylinderGeometry(4, 3, 14); //radiusTop, radiusBottom, height
 	mesh = new THREE.Mesh(geometry, material);
 
+
 	mesh.position.set(0, 0, 0);
 	mesh.rotation.x = Math.PI/2;
 
 	cannon.add(mesh);
 	cannon.position.set(x, y, z);
 
+	var wheel1 = createWheel(4, 0, 3);
+	var wheel2 = createWheel(-4, 0, 3);
+
+	cannon.add(wheel1);
+	cannon.add(wheel2);
+
 	return cannon;
+}
+
+function createWheel(x, y, z){
+	'use strict';
+
+	var wheel = new THREE.Object3D();
+
+	material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true }); 
+	geometry = new THREE.CylinderGeometry(4, 4, 0.5); //radiusTop, radiusBottom, height
+	mesh = new THREE.Mesh(geometry, material);
+
+	mesh.position.set(x, y, z);
+	mesh.rotation.x = Math.PI/2;
+	mesh.rotation.z = Math.PI/2;
+
+	wheel.add(mesh);
+
+	return wheel;
 }
 
 function setActiveCannon(selected, playingField){
