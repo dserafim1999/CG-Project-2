@@ -17,7 +17,7 @@ function createBall(x, y, z) {
 
 	ball.radius = 2;
 	ball.movement = new THREE.Vector3(0, 0, 0);
-	ball.speed = Math.random() * 4 + 0.5;
+	ball.speed = Math.random() + 0.5;
 	ball.xyz = new THREE.AxisHelper(10);
 	ball.add(ball.xyz);
 
@@ -55,25 +55,16 @@ function createBall(x, y, z) {
 		return false;
 	};
 
-	ball.processCollitionWithBall = function(ball) {
+	ball.processCollitionWithBall = function(ball, intersection) {
 		'use strict';
 
-		if (this.movement.x == 0 && this.movement.y == 0) {
-			this.movement.copy(ball.movement);
-		} else {
-			if ((this.movement.x > 0 && ball.movement.x > 0) || (this.movement.x < 0 && ball.movement.x < 0)) {
-				this.movement.x = ball.movement.x;
-				this.movement.z = -ball.movement.z;
-			} else if ((this.movement.z > 0 && ball.movement.z > 0) || (this.movement.z < 0 && ball.movement.z < 0)) {
-				this.movement.z = ball.movement.z;
-				this.movement.x = -ball.movement.x;
-			} else {
-				this.movement.x = -this.movement.x;
-				this.movement.z = -this.movement.z;
-			}
-		}
-		ball.movement.x = -ball.movement.x;
-		ball.movement.z = -ball.movement.z;
+		//var waytogo = BALL_DIAMETER - intersection.length();
+		//this.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
+		
+		this.movement.x = intersection.x;
+		this.movement.z = intersection.z;
+		ball.movement.x = -intersection.x;
+		ball.movement.z = -intersection.z;
 		this.speed = ball.speed;
 	};
 
@@ -90,6 +81,14 @@ function createBall(x, y, z) {
 			}
 		}
 	};
+	//Finds the point where the 2 balls intersect
+	//returns the intersection point
+	ball.getIntersectionVectorFromCollisionWithBall = function(ball) {
+		var intersectionVector = new THREE.Vector3(0, 0, 0);
+		intersectionVector.x = ball.position.x - this.position.x;
+		intersectionVector.z = ball.position.z - this.position.z;
+		return intersectionVector;
+	};
 
 	return ball;
 }
@@ -100,7 +99,9 @@ function handleBallCollision() {
 	for (i = 0; i < BallList.length; i++) {
 		ball1 = BallList[i];
 		handleBallCollisionWithWall(ball1);
-		for (j = i + 1; j < BallList.length; j++) {
+		for (j = 0; j < BallList.length; j++) {
+			if(i==j)
+				continue;
 			ball2 = BallList[j];
 			handleBallCollisionWithBalls(ball1, ball2);
 		}
@@ -122,7 +123,8 @@ function handleBallCollisionWithBalls(ball1, ball2) {
 	var intersectionVector;
 	if (ball1.isCollidingWithBall(ball2)) {
 		console.log('COLLISION WITH BALLS');
-		ball1.processCollitionWithBall(ball2);
+		intersectionVector = ball1.getIntersectionVectorFromCollisionWithBall(ball2);
+		ball1.processCollitionWithBall(ball2, intersectionVector.normalize());
 	}
 }
 
@@ -185,17 +187,7 @@ function updateBallList() {
 		}
 	}
 }
-
 /*
-	//Finds the point where the 2 balls intersect
-	//returns the intersection point
-	ball.getIntersectionVectorFromCollisionWithBall = function(ball) {
-		var intersectionVector = new THREE.Vector3(0, 0, 0);
-		intersectionVector.x = ball.position.x - this.position.x;
-		intersectionVector.z = ball.position.z - this.position.z;
-		return intersectionVector;
-	};
-
 	//Determines the movement for the 2 balls after the collision
 	ball.processCollitionWithBall = function(ball, intersection) {
 		var angle_from_this_ball;
@@ -208,31 +200,32 @@ function updateBallList() {
 		var totalNewMovementToCollidingBall;
 
 		if (this.movement) {
-			angle_from_this_ball = this.movement.angleTo(intersection);
+			angle_from_this_ball = this.movement.angleTo(intersection.negate());
 			movementAddedToThisBallFromThisBall = new THREE.Vector3(this.movement.x * Math.sin(angle_from_this_ball), 0, this.movement.z * Math.sin(angle_from_this_ball));
 			movementAddedToCollidingBallFromThisBall = new THREE.Vector3(this.movement.x * Math.cos(angle_from_this_ball), 0, this.movement.z * Math.cos(angle_from_this_ball));
 		}
 
 		if (ball.movement) {
-			angle_from_colliding_ball = ball.movement.angleTo(intersection.negate());
+			angle_from_colliding_ball = ball.movement.angleTo(intersection);
 			movementAddedToThisBallFromCollidingBall = new THREE.Vector3(ball.movement.x * Math.cos(angle_from_colliding_ball), 0, ball.movement.z * Math.cos(angle_from_colliding_ball));
 			movementAddedToCollidingBallFromCollidingBall = new THREE.Vector3(ball.movement.x * Math.sin(angle_from_colliding_ball), 0, ball.movement.z * Math.sin(angle_from_colliding_ball));
 		}
-
 		totalNewMovementToThisBall = movementAddedToThisBallFromThisBall.add(movementAddedToThisBallFromCollidingBall);
 		totalNewMovementToCollidingBall = movementAddedToCollidingBallFromThisBall.add(movementAddedToCollidingBallFromCollidingBall);
-
 		this.movement = totalNewMovementToThisBall;
 		ball.movement = totalNewMovementToCollidingBall;
 
+		var waytogo = BALL_DIAMETER - intersection.length();
+
+		this.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
+
 		if (this.movement) {
-			this.position.addScaledVector(this.movement, this.speed);
+			this.position.addScaledVector(this.movement, this.speed * delta);
 		}
 
 		if (ball.movement) {
-			ball.position.addScaledVector(ball.movement, ball.speed);
+			ball.position.addScaledVector(ball.movement, ball.speed * delta);
 		}
-		//return 'Process';
+		//return 'Proces
 	};
-
 */

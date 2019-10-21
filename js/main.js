@@ -1,7 +1,7 @@
 var scene,
 	renderer,
 	toggle = true;
-var friction = 0.5;
+var friction = 0.25;
 
 var cameras = {
 	topOrthographicCamera: null,
