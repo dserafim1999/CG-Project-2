@@ -40,6 +40,13 @@ function onKeyPress(e) {
 				scene.activeCamera = cameras.followBallPerspectiveCamera;
 			}
 			break;
+		case 52: //4
+			scene.traverse(function(node) {
+				if (node instanceof THREE.Mesh) {
+					node.material.wireframe = !node.material.wireframe;
+				}
+			});
+			break;
 		case 81: //Q
 		case 113: //q
 			selectedCanon = 'left';
