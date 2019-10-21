@@ -16,8 +16,8 @@ function createBall(x, y, z) {
 	ball.add(mesh);
 
 	ball.radius = 2;
-	ball.movement = new THREE.Vector3(0,0,0);
-	ball.speed = Math.random()*4 + 0.5;
+	ball.movement = new THREE.Vector3(0, 0, 0);
+	ball.speed = Math.random() * 4 + 0.5;
 	ball.xyz = new THREE.AxisHelper(10);
 	ball.add(ball.xyz);
 
@@ -58,18 +58,16 @@ function createBall(x, y, z) {
 	ball.processCollitionWithBall = function(ball) {
 		'use strict';
 
-		if(this.movement.x == 0 && this.movement.y == 0){
+		if (this.movement.x == 0 && this.movement.y == 0) {
 			this.movement.copy(ball.movement);
 		} else {
-			if(this.movement.x > 0 && ball.movement.x > 0 || this.movement.x < 0 && ball.movement.x < 0){
+			if ((this.movement.x > 0 && ball.movement.x > 0) || (this.movement.x < 0 && ball.movement.x < 0)) {
 				this.movement.x = ball.movement.x;
 				this.movement.z = -ball.movement.z;
-			}
-			else if(this.movement.z > 0 && ball.movement.z > 0 || this.movement.z < 0 && ball.movement.z < 0){
+			} else if ((this.movement.z > 0 && ball.movement.z > 0) || (this.movement.z < 0 && ball.movement.z < 0)) {
 				this.movement.z = ball.movement.z;
 				this.movement.x = -ball.movement.x;
-			}
-			else {
+			} else {
 				this.movement.x = -this.movement.x;
 				this.movement.z = -this.movement.z;
 			}
@@ -128,46 +126,65 @@ function handleBallCollisionWithBalls(ball1, ball2) {
 	}
 }
 
-function ballsMovement(delta){
+function ballsMovement(delta) {
 	'use strict';
-	
-	for (var i = 0; i < BallList.length; i++){
-		reduceSpeed(delta*friction, BallList[i]);
+
+	for (var i = 0; i < BallList.length; i++) {
+		reduceSpeed(delta * friction, BallList[i]);
 		rotateBall(BallList[i]);
 		BallList[i].position.addScaledVector(BallList[i].movement, -BallList[i].speed);
 		outOfBounds(BallList[i]);
 	}
 }
 
-function outOfBounds(ball){
-	if(ball.position.z > 62 || ball.position.z < -32 || ball.position.x > 32 || ball.position.x < -32){
+function outOfBounds(ball) {
+	if (ball.position.z > 62 || ball.position.z < -32 || ball.position.x > 32 || ball.position.x < -32) {
 		ball.position.y -= 2;
 	}
 }
 
-function toggleAxis(toggle){
+function toggleAxis(toggle) {
 	for (var i = 0; i < BallList.length; i++) {
-		if(toggle)
-			BallList[i].xyz.visible = true;
-		else
-			BallList[i].xyz.visible = false;
+		if (toggle) BallList[i].xyz.visible = true;
+		else BallList[i].xyz.visible = false;
 	}
 }
 
-function reduceSpeed(speed, ball){
-	if(ball.speed >= 0)
-		ball.speed -= speed;
+function reduceSpeed(speed, ball) {
+	if (ball.speed >= 0) ball.speed -= speed;
 }
 
-function rotateBall(ball){
-	if(ball.speed >= 0){
-		var perpendicular = new THREE.Vector3().copy(ball.movement); 
-		perpendicular.applyAxisAngle(new THREE.Vector3(0,1,0), Math.PI/2); //rotates the vector to become perpendicular to the movement vector
+function rotateBall(ball) {
+	if (ball.speed >= 0) {
+		var perpendicular = new THREE.Vector3().copy(ball.movement);
+		perpendicular.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2); //rotates the vector to become perpendicular to the movement vector
 		ball.rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
-}
+	}
 }
 
+// This method deletes balls that are not visible to the 1 camera anymore
+function updateBallList() {
+	var i;
+	var ball;
+	var deleteBallsFromList = [];
+	var index;
 
+	for (i = 0; i < BallList.length; i++) {
+		ball = BallList[i];
+		if (ball.position.y < -1000) {
+			deleteBallsFromList.push(ball);
+			console.log('BALL IS NOT VISIBLE ANYMORE!');
+		}
+	}
+
+	for (i = 0; i < deleteBallsFromList.length; i++) {
+		ball = deleteBallsFromList[i];
+		index = BallList.indexOf(ball);
+		if (index > -1) {
+			BallList.splice(index, 1);
+		}
+	}
+}
 
 /*
 	//Finds the point where the 2 balls intersect
@@ -219,4 +236,3 @@ function rotateBall(ball){
 	};
 
 */
-

@@ -1,4 +1,6 @@
-var scene, renderer, toggle = true;
+var scene,
+	renderer,
+	toggle = true;
 var friction = 0.5;
 
 var cameras = {
@@ -91,18 +93,17 @@ function createScene() {
 	scene = new THREE.Scene();
 
 	createPlayingField(0, 0, 0);
-	 for (i = 0; i < aux; i++) {
-	 	ball1 = createBall((Math.random() - 0.5) * 50, 2, (Math.random() - 0.5) * 50);
-	 	for (j = 0; j < i; j++){
-	 		ball2 = BallList[j];
-	 		if(ball1.isCollidingWithBall(ball2)){
-	 			scene.remove(ball2);
-	 			BallList.splice(j, 1);
-	 			break;
-	 		}
-	 	}
+	for (i = 0; i < aux; i++) {
+		ball1 = createBall((Math.random() - 0.5) * 50, 2, (Math.random() - 0.5) * 50);
+		for (j = 0; j < i; j++) {
+			ball2 = BallList[j];
+			if (ball1.isCollidingWithBall(ball2)) {
+				scene.remove(ball2);
+				BallList.splice(j, 1);
+				break;
+			}
+		}
 	}
-
 }
 
 function render() {
@@ -120,6 +121,8 @@ function animate() {
 	setActiveCannon(selectedCanon, playingField);
 	if (shoot) shootBall();
 	ballsMovement(delta);
+	updateBallList();
+	updateFollowBallCamera();
 
 	render();
 
@@ -139,6 +142,8 @@ function init() {
 	cameras.topOrthographicCamera = createTopOrthographicCamera();
 	cameras.fixedPerspectiveCamera = createFixedPerspectiveCamera();
 	scene.activeCamera = cameras.fixedPerspectiveCamera;
+
+	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(BallList[0]);
 	render();
 
 	window.addEventListener('resize', onResize);
