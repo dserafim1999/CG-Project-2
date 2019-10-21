@@ -33,7 +33,7 @@ function createBall(x, y, z) {
 
 		var collisionDistance = Math.pow(this.radius + ball.radius, 2);
 		var actualDistanceBetweenBalls = Math.pow(this.position.x - ball.position.x, 2) + Math.pow(this.position.z - ball.position.z, 2);
-		if (collisionDistance >= actualDistanceBetweenBalls) {
+		if (collisionDistance >= actualDistanceBetweenBalls && this.position.y == ball.position.y) {
 			return true;
 		}
 		return false;
@@ -58,13 +58,14 @@ function createBall(x, y, z) {
 	ball.processCollitionWithBall = function(ball, intersection) {
 		'use strict';
 
-		//var waytogo = BALL_DIAMETER - intersection.length();
-		//this.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
+		var waytogo = BALL_DIAMETER - intersection.length();
+		ball.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
 		
-		this.movement.x = intersection.x;
-		this.movement.z = intersection.z;
-		ball.movement.x = -intersection.x;
-		ball.movement.z = -intersection.z;
+		var intersectionNormal = intersection.normalize();
+		this.movement.x = intersectionNormal.x;
+		this.movement.z = intersectionNormal.z;
+		ball.movement.x = -intersectionNormal.x;
+		ball.movement.z = -intersectionNormal.z;
 		this.speed = ball.speed;
 	};
 
@@ -124,7 +125,7 @@ function handleBallCollisionWithBalls(ball1, ball2) {
 	if (ball1.isCollidingWithBall(ball2)) {
 		console.log('COLLISION WITH BALLS');
 		intersectionVector = ball1.getIntersectionVectorFromCollisionWithBall(ball2);
-		ball1.processCollitionWithBall(ball2, intersectionVector.normalize());
+		ball1.processCollitionWithBall(ball2, intersectionVector);
 	}
 }
 

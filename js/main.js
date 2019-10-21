@@ -148,9 +148,9 @@ function init() {
 	createScene();
 	cameras.topOrthographicCamera = createTopOrthographicCamera();
 	cameras.fixedPerspectiveCamera = createFixedPerspectiveCamera();
+	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(BallList[0]);
 	scene.activeCamera = cameras.fixedPerspectiveCamera;
 
-	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(BallList[0]);
 	render();
 
 	window.addEventListener('resize', onResize);
