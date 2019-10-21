@@ -62,18 +62,24 @@ function createFollowBallPerspectiveCamera(ball) {
 	let far = 1000;
 
 	var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-	ball.add(camera);
 
 	camera.ball = ball;
 
-	camera.position.set(0, 3, -5);
+	camera.position.x = ball.position.x;
+	camera.position.y = ball.position.y + 3;
+	camera.position.z = ball.position.z - 5;
+	// camera.position.set(0, 3, -5);
 	camera.up.set(0, -1, 0);
-	camera.lookAt(ball.movement);
+	camera.lookAt(ball.position);
 
 	return camera;
 }
 
 function updateFollowBallCamera() {
+	cameras.followBallPerspectiveCamera.position.x = cameras.followBallPerspectiveCamera.ball.position.x;
+	cameras.followBallPerspectiveCamera.position.y = cameras.followBallPerspectiveCamera.ball.position.y + 3;
+	cameras.followBallPerspectiveCamera.position.z = cameras.followBallPerspectiveCamera.ball.position.z - 5;
+	// If ball goes out of view
 	if (cameras.followBallPerspectiveCamera.ball.position.y < -1000) {
 		for (i = 0; i < BallList.length; i++) {
 			ball = BallList[i];
