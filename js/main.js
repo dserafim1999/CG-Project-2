@@ -94,7 +94,7 @@ function createScene() {
 	'use strict';
 
 	var i, j;
-	var aux = Math.random() * 10;
+	var aux = Math.random() * 15;
 	var ball1, ball2;
 
 	scene = new THREE.Scene();

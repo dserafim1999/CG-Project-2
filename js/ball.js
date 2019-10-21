@@ -16,9 +16,9 @@ function createBall(x, y, z) {
 	ball.add(mesh);
 
 	ball.radius = 2;
-	ball.movement = new THREE.Vector3(0, 0, 0);
-	ball.speed = Math.random() + 0.5;
-	ball.xyz = new THREE.AxisHelper(10);
+	ball.movement = new THREE.Vector3(Math.random(), 0, Math.random());
+	ball.speed = ball.movement.length();
+	ball.xyz = new THREE.AxesHelper(10);
 	ball.add(ball.xyz);
 
 	ball.position.set(0, 0, 0);
@@ -62,10 +62,10 @@ function createBall(x, y, z) {
 		ball.position.addScaledVector(intersection.normalize(), waytogo + 0.01);
 		
 		var intersectionNormal = intersection.normalize();
-		this.movement.x = intersectionNormal.x;
-		this.movement.z = intersectionNormal.z;
-		ball.movement.x = -intersectionNormal.x;
-		ball.movement.z = -intersectionNormal.z;
+		
+		this.movement.copy(intersectionNormal);
+		ball.movement.copy(intersectionNormal.negate());
+
 		this.speed = ball.speed;
 	};
 
@@ -125,8 +125,7 @@ function handleBallCollisionWithBalls(ball1, ball2) {
 	if (ball1.isCollidingWithBall(ball2)) {
 		console.log('COLLISION WITH BALLS');
 		intersectionVector = ball1.getIntersectionVectorFromCollisionWithBall(ball2);
-		ball1.processCollitionWithBall(ball2, intersectionVector);
-	}
+		ball1.processCollitionWithBall(ball2, intersectionVector);	}
 }
 
 function ballsMovement(delta) {
@@ -134,19 +133,23 @@ function ballsMovement(delta) {
 
 	for (var i = 0; i < BallList.length; i++) {
 		reduceSpeed(delta * friction, BallList[i]);
-		rotateBall(BallList[i]);
 		BallList[i].position.addScaledVector(BallList[i].movement, -BallList[i].speed);
+		rotateBall(BallList[i]);
 		outOfBounds(BallList[i]);
 	}
 }
 
 function outOfBounds(ball) {
+	'use strict';
+
 	if (ball.position.z > 62 || ball.position.z < -32 || ball.position.x > 32 || ball.position.x < -32) {
 		ball.position.y -= 2;
 	}
 }
 
 function toggleAxis(toggle) {
+	'use strict';
+
 	for (var i = 0; i < BallList.length; i++) {
 		if (toggle) BallList[i].xyz.visible = true;
 		else BallList[i].xyz.visible = false;
@@ -154,19 +157,25 @@ function toggleAxis(toggle) {
 }
 
 function reduceSpeed(speed, ball) {
+	'use strict';
+
 	if (ball.speed >= 0) ball.speed -= speed;
 }
 
 function rotateBall(ball) {
+	'use strict';
+
 	if (ball.speed >= 0) {
 		var perpendicular = new THREE.Vector3().copy(ball.movement);
 		perpendicular.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2); //rotates the vector to become perpendicular to the movement vector
-		ball.rotateOnAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
+		ball.rotateOnWorldAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
 	}
 }
 
 // This method deletes balls that are not visible to the 1 camera anymore
 function updateBallList() {
+	'use strict';
+
 	var i;
 	var ball;
 	var deleteBallsFromList = [];

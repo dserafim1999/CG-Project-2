@@ -18,7 +18,8 @@ function cannonMovement() {
 function shootBall() {
 	shoot = false;
 	ball = createBall(playingField.activeCannon.position.x, 2, playingField.activeCannon.position.z);
-	ball.movement = playingField.activeCannon.getWorldDirection();
+	ball.speed += Math.random() + 0.5; //extra speed for shot balls
+	playingField.activeCannon.getWorldDirection(ball.movement);
 	ball.position.addScaledVector(ball.movement, -7); //-7 to shoot from the tip of the cannon and not the center
 	if (toggle == false) ball.xyz.visible = false;
 }
