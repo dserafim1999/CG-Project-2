@@ -1,7 +1,7 @@
 var scene,
 	renderer,
 	toggle = true;
-var friction = 0.25;
+var friction = 0.5;
 
 var cameras = {
 	topOrthographicCamera: null,
@@ -86,7 +86,7 @@ function onKeyUp(e) {
 function onResize() {
 	'use strict';
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	scene.activeCamera.aspect = renderer.getSize().width / renderer.getSize().height;
+	scene.activeCamera.aspect = window.innerWidth / window.innerHeight;
 	scene.activeCamera.updateProjectionMatrix();
 }
 
@@ -94,7 +94,7 @@ function createScene() {
 	'use strict';
 
 	var i, j;
-	var aux = Math.random() * 15;
+	var aux = Math.random() * 10;
 	var ball1, ball2;
 
 	scene = new THREE.Scene();
@@ -148,9 +148,9 @@ function init() {
 	createScene();
 	cameras.topOrthographicCamera = createTopOrthographicCamera();
 	cameras.fixedPerspectiveCamera = createFixedPerspectiveCamera();
-	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(BallList[0]);
 	scene.activeCamera = cameras.fixedPerspectiveCamera;
 
+	cameras.followBallPerspectiveCamera = createFollowBallPerspectiveCamera(BallList[0]);
 	render();
 
 	window.addEventListener('resize', onResize);

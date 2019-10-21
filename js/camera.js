@@ -76,9 +76,11 @@ function createFollowBallPerspectiveCamera(ball) {
 }
 
 function updateFollowBallCamera() {
-	cameras.followBallPerspectiveCamera.position.x = cameras.followBallPerspectiveCamera.ball.position.x;
-	cameras.followBallPerspectiveCamera.position.y = cameras.followBallPerspectiveCamera.ball.position.y + 3;
-	cameras.followBallPerspectiveCamera.position.z = cameras.followBallPerspectiveCamera.ball.position.z - 5;
+	var lastBall = BallList[BallList.length - 1];
+	cameras.followBallPerspectiveCamera.position.x = lastBall.position.x;
+	cameras.followBallPerspectiveCamera.position.y = lastBall.position.y + 3;
+	cameras.followBallPerspectiveCamera.position.z = lastBall.position.z + 5;
+	cameras.followBallPerspectiveCamera.lookAt(lastBall.position);
 	// If ball goes out of view
 	if (cameras.followBallPerspectiveCamera.ball.position.y < -1000) {
 		for (i = 0; i < BallList.length; i++) {
