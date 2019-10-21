@@ -18,8 +18,8 @@ function createTopOrthographicCamera() {
 
 	var camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
 	camera.position.x = 0;
-	camera.position.y = 0;
-	camera.position.z = 50;
+	camera.position.y = 100;
+	camera.position.z = 0;
 	camera.lookAt(scene.position);
 
 	return camera;
