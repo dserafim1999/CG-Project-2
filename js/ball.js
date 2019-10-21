@@ -160,12 +160,16 @@ function reduceSpeed(speed, ball) {
 	'use strict';
 
 	if (ball.speed >= 0) ball.speed -= speed;
+	else {
+		ball.speed = 0;
+		ball.movement = new THREE.Vector3(0, 0, 0);
+	}
 }
 
 function rotateBall(ball) {
 	'use strict';
 
-	if (ball.speed >= 0) {
+	if (ball.speed > 0) {
 		var perpendicular = new THREE.Vector3().copy(ball.movement);
 		perpendicular.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2); //rotates the vector to become perpendicular to the movement vector
 		ball.rotateOnWorldAxis(perpendicular.normalize(), -rotationSpeed); //rotates around the perpendicular vector
